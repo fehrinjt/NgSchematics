@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "TestSchematicsSchema",
+    "title": "My Test Schema",
+    "type": "object",
+    "properties": {
+      "index": {
+        "type": "number",
+        "default": 1
+      },
+      "path": {
+        "type": "string",
+        "format": "path"
+      }
+    },
+    "required": [
+      "name"
+    ]
+  }
+  
