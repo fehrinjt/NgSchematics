@@ -1,4 +1,4 @@
-export interface FormProperty {
+export interface FormControl {
     name: string;
     label: string;
     type: string;

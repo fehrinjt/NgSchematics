@@ -1,5 +1,5 @@
 import { Rule, SchematicContext, Tree, url, apply, template, mergeWith } from '@angular-devkit/schematics';
-import { FormProperty } from './form-property.interface';
+import { LcForm } from './models/form.model';
 
 
 // You don't have to export the function as default. You can also have more than one rule factory
@@ -13,11 +13,11 @@ export function test(_options: any): Rule {
     if (contents) {
       const sourceTemplates = url('./files');
 
-      const props = <FormProperty[]>JSON.parse(contents.toString());
+      const form = <LcForm>JSON.parse(contents.toString());
 
       const sourceParamTemplates = apply(sourceTemplates, [
         template({
-          props
+          form
         })
       ]);
 
