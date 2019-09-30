@@ -11,8 +11,8 @@ export class <%= classify(name)%>FormService {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-        <% for (const ctl in form.controls) {%>
-            <%= ctl.name%>: [null<% if(ctl.validation.required){%>, Validators.required<%} if(ctl.validation.minlength > 0){%>, Validators.minLength(<%= ctl.validation.minlength%>)<%}%>],
+        <% for (const ctl of form.controls) {%>
+            <%= ctl.name%>: [null<% if(ctl.validation.required){%>, Validators.required<%} if(ctl.validation.minLength > 0){%>, Validators.minLength(<%= ctl.validation.minLength%>)<%}%>],
         <%}%>
     });
   }

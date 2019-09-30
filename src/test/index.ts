@@ -1,5 +1,6 @@
 import { Rule, SchematicContext, Tree, url, apply, template, mergeWith } from '@angular-devkit/schematics';
 import { LcForm } from './models/form.model';
+import { strings } from '@angular-devkit/core';
 
 
 // You don't have to export the function as default. You can also have more than one rule factory
@@ -7,9 +8,9 @@ import { LcForm } from './models/form.model';
 export function test(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
-    const { path } = _options;
+    const { path, name } = _options;
+    console.log(_options);
     const contents = tree.read(path);
-
     if (contents) {
       const sourceTemplates = url('./files');
 
@@ -17,7 +18,9 @@ export function test(_options: any): Rule {
 
       const sourceParamTemplates = apply(sourceTemplates, [
         template({
-          form
+          form,
+          name,
+          ...strings
         })
       ]);
 
