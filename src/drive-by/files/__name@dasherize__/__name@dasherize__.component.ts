@@ -1,11 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { PaymentLoaderService } from '../services/payment-loader.service';
-import { PaymentFormService } from '../services/payment-form.service';
-import { PaymentFormValidatorsService } from '../services/payment-form-validators.service';
 import { AbstractControl, FormGroup, NgForm } from '@angular/forms';
-import { IPaymentFormInterface } from '../services/payment-form.interface';
 import {  Observable, of } from 'rxjs';
-import { PaymentEventComponent } from '../payment-event/payment-event.component';
+import { ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+
+import { IPaymentFormInterface } from './models/payment-form.model';
+import { PaymentFormService } from './services/payment-form.service';
+import { PaymentFormValidatorsService } from './services/payment-form-validators.service';
+import { PaymentService } from './services/payment.service';
 
 @Component({
   selector: 'app-payment-form-container',
@@ -13,33 +15,37 @@ import { PaymentEventComponent } from '../payment-event/payment-event.component'
   styleUrls: ['./payment-form-container.component.scss'],
   providers: [
     PaymentFormService,
-    PaymentFormValidatorsService,
-    PaymentLoaderService
+    PaymentFormValidatorsService
   ]
 })
 export class PaymentFormContainerComponent implements OnInit {
-
   get form(): FormGroup {
     return this.paymentFormService.form;
   }
 
   data: IPaymentFormInterface;
+  loading = true;
+  id: number;
 
   constructor(
-    private paymentLoaderService: PaymentLoaderService,
     private paymentFormService: PaymentFormService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.data = DEMO_PAYMENT;
-    console.log('data:' + JSON.stringify(this.data));
-    this.paymentLoaderService.loadPaymentForEdit(DEMO_PAYMENT);
-    const x = this.form.get('paymentEventDetail');
+    this.route.params.subscribe(params => (this.id = +params['id']));
+    this.getData(this.id);
   }
 
-  getData(id: string) {
-      this.paymentService.
+  getData(id: number) {
+      this.paymentService.getById(id)
+        .pipe(
+            finalize(() => this.loading = false)
+        )
+        .subscribe(res => {
+            this.data = res;
+        });
   }
 
   public cellClickHandler({ sender, rowIndex, columnIndex, dataItem, isEdited }) {

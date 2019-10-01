@@ -3,7 +3,7 @@ import { environment } from '@my-environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { <%= classify(name)%> } from './models/<%= classify(name)%>.model.ts';
+import { <%= classify(name)%> } from './models/<%= classify(name)%>.model';
 import { BaseService } from '@my-core/base.service';
 // import { MessagingService } from '@agreement-tracker/services/messaging.service';
 
@@ -23,6 +23,17 @@ export class <%= classify(name)%>Service extends BaseService {
 
   get(filter = '', orderby = ''): Observable<<%= classify(name)%>[]> {
     return this.http.get<<%= classify(name)%>[]>(this.buildFilterOrderUrl(this.url, filter, orderby))
+      .pipe(
+        map((res) => res),
+        catchError(() => {
+           // this.messageService.addMessage('Error', 'Error getting <%= classify(name)%>s');
+           return throwError('Error getting <%= classify(name)%>s');
+           })
+      );
+  }
+
+  getById(id: number): Observable<<%= classify(name)%>> {
+    return this.http.get<<%= classify(name)%>>(`${this.url}/${id}`)
       .pipe(
         map((res) => res),
         catchError(() => {
