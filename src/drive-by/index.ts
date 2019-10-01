@@ -11,10 +11,22 @@ export function driveBy(_options: any): Rule {
     const { path, name } = _options;
     console.log(_options);
     const contents = tree.read(path);
+    const config = tree.read('./tsconfig2.json');
+
     if (contents) {
       const sourceTemplates = url('./files');
 
       const form = <LcForm>JSON.parse(contents.toString());
+
+      let configJson = null;
+      if (config) {
+        configJson = JSON.parse(config.toString());
+      }
+
+      // TODO: Read in the tsconfig and set something up to read the paths if available for services, environment, etc.
+      // const a = Object.keys(configJson.compilerOptions.paths).filter(k => k.toString().includes('service'))[0];
+      // console.log(configJson);
+      // console.log(a);
 
       const sourceParamTemplates = apply(sourceTemplates, [
         template({
