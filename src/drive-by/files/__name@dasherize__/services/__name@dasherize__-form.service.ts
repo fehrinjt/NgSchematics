@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { <%= classify(name)%>FormValidatorsService } from './<%= dasherize(name)%>-form-validators.service';
+import { <%= classify(name)%>FormValidatorsService } from './<%= dasherize(name)%>-form-validator.service';
 
 @Injectable()
 export class <%= classify(name)%>FormService {
@@ -12,7 +12,7 @@ export class <%= classify(name)%>FormService {
   ) {
     this.form = this.fb.group({
         <% for (const ctl of form.controls) {%>
-            <%= ctl.name%>: [null<% if(ctl.validation.required){%>, Validators.required<%} if(ctl.validation.minLength > 0){%>, Validators.minLength(<%= ctl.validation.minLength%>)<%}%>],
+            <%= ctl.name%>: [null<% if(ctl.validation.required){%>, Validators.required<%} if(ctl.validation.minLength > 0){%>, Validators.minLength(<%= ctl.validation.minLength%>)<%} if(ctl.validation.maxLength > 0){%>, Validators.maxLength(<%= ctl.validation.maxLength%>)<%}%>],
         <%}%>
     });
   }

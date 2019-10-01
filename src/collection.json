@@ -1,10 +1,10 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "test": {
+    "driveBy": {
       "description": "A blank schematic.",
-      "factory": "./test/index#test",
-      "schema": "./test/schema.json"
+      "factory": "./drive-by/index#driveBy",
+      "schema": "./drive-by/schema.json"
     }
   }
 }
