@@ -1,28 +1,44 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { <%= classify(name)%>FormValidatorsService } from './<%= dasherize(name)%>-form-validator.service';
+import { environment } from '@lc-app/environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
+import { BaseService } from '@lc-app/core/services/base.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { <%= classify(name)%>FormValidatorService } from './<%= camelize(name)%>-form-validator.service';
 
 @Injectable()
 export class <%= classify(name)%>FormService {
-  public form: FormGroup;
+  form: FormGroup;
+  <%= camelize(name)%>Id: number;
 
   constructor(
-    private <%= camelize(name)%>ValidatorsService: <%= classify(name)%>FormValidatorsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private <%= camelize(name)%>FormValidatorService: <%= classify(name)%>FormValidatorService
   ) {
     this.form = this.fb.group({
-        <% for (const ctl of form.controls) {%>
-            <%= ctl.name%>: [null<% if(ctl.validation.required){%>, Validators.required<%} if(ctl.validation.minLength > 0){%>, Validators.minLength(<%= ctl.validation.minLength%>)<%} if(ctl.validation.maxLength > 0){%>, Validators.maxLength(<%= ctl.validation.maxLength%>)<%}%>],
-        <%}%>
+      <%= camelize(name)%>Id: [null],
+      name: [null, [Validators.required, Validators.maxLength(50)]],
+      description: [null, Validators.required],
+      price: [null, Validators.required]
     });
-  }
+   }
 
-  get isValid(): boolean {
+   get isValid(): boolean {
     if (!this.form.valid) {
-      this.<%= camelize(name)%>ValidatorsService.validateAllFormFields(this.form);
+      this.<%= camelize(name)%>FormValidatorService.validateAllFormFields(this.form);
       return false;
     }
 
     return true;
-  }
+   }
+
+   patch(<%= camelize(name)%>: <%= classify(name)%>) {
+     this.<%= camelize(name)%>Id = <%= camelize(name)%>.<%= camelize(name)%>Id;
+
+     this.form.patchValue({
+       ...<%= camelize(name)%>
+     });
+   }
 }

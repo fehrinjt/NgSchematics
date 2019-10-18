@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@my-environments/environment';
+import { environment } from '@lc-app/environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { <%= classify(name)%> } from './models/<%= classify(name)%>.model';
-import { BaseService } from '@my-core/base.service';
-// import { MessagingService } from '@agreement-tracker/services/messaging.service';
+import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
+import { BaseService } from '@lc-app/core/services/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class <%= classify(name)%>Service extends BaseService {
-  apiEndpoint = '<%= classify(name)%>/';
-  url = environment.serverName + environment.apiUrl + this.apiEndpoint;
+  apiEndpoint = '<%= camelize(name)%>s/';
+  // url = environment.serverName + environment.apiUrl + this.apiEndpoint;
+  url = 'assets/mock/<%= camelize(name)%>s.json';
 
   constructor(
-    private http: HttpClient/*,
-    private messageService: MessagingService*/
+    private http: HttpClient
   ) {
     super();
    }
@@ -26,19 +25,17 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           // this.messageService.addMessage('Error', 'Error getting <%= classify(name)%>s');
            return throwError('Error getting <%= classify(name)%>s');
            })
       );
   }
 
   getById(id: number): Observable<<%= classify(name)%>> {
-    return this.http.get<<%= classify(name)%>>(`${this.url}/${id}`)
+    return this.http.get<<%= classify(name)%>[]>(this.url)
       .pipe(
-        map((res) => res),
+        map((res) => res.filter(p => p.<%= camelize(name)%>Id === id)[0]),
         catchError(() => {
-           // this.messageService.addMessage('Error', 'Error getting <%= classify(name)%>');
-           return throwError('Error getting <%= classify(name)%>');
+           return throwError('Error getting <%= classify(name)%>s');
            })
       );
   }
@@ -48,29 +45,26 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           // this.messageService.addMessage('Error', 'Error creating <%= classify(name)%>');
            return throwError('Error creating <%= classify(name)%>');
            })
       );
   }
 
   update(<%= camelize(name)%>: <%= classify(name)%>): Observable<<%= classify(name)%>> {
-    return this.http.put<<%= classify(name)%>>(`${this.url}/${this.url.<%= camelize(name)%>Id}` , <%= camelize(name)%>)
+    return this.http.put<<%= classify(name)%>>(this.url + '/' + <%= camelize(name)%>.<%= camelize(name)%>Id, <%= camelize(name)%>)
       .pipe(
         map((res) => res),
         catchError(() => {
-           // this.messageService.addMessage('Error', 'Error updating <%= classify(name)%>');
            return throwError('Error updating <%= classify(name)%>');
            })
       );
   }
 
-  delete(id: number): Observable<{}> {
-    return this.http.delete<<%= classify(name)%>>(`${this.url}/${id}`)
+  delete(<%= camelize(name)%>: <%= classify(name)%>): Observable<<%= classify(name)%>> {
+    return this.http.delete<<%= classify(name)%>>(this.url + '/' + <%= camelize(name)%>.<%= camelize(name)%>Id)
       .pipe(
         map((res) => res),
         catchError(() => {
-           // this.messageService.addMessage('Error', 'Error deleting <%= classify(name)%>');
            return throwError('Error deleting <%= classify(name)%>');
            })
       );

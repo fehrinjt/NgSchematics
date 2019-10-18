@@ -1,20 +1,17 @@
 {
     "$schema": "http://json-schema.org/schema",
     "id": "DrivBySchematicsSchema",
-    "title": "My Drive By Schema",
+    "title": "LC Drive By Schema",
     "type": "object",
     "properties": {
-      "index": {
-        "type": "number",
-        "default": 1
-      },
-      "path": {
-        "type": "string"
-      },
       "name": {
         "type": "string",
-        "description": "Testing",
-        "x-prompt": "what is your name?" 
+        "description": "Name of the drive by (example, the model name: Product)",
+        "x-prompt": "What name to use?" 
+      },
+      "project": {
+        "type": "string",
+        "description": "Generate in specific Angular CLI Workspace project"
       }
     },
     "required": [

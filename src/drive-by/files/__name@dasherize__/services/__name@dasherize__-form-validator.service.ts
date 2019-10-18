@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Injectable()
-export class <%= classify(name)%>FormValidatorsService {
+export class <%= classify(name)%>FormValidatorService {
 
   constructor() { }
 
@@ -13,6 +13,7 @@ export class <%= classify(name)%>FormValidatorsService {
       return Object.keys(errors).length ? errors : null;
     };
   }
+
 
   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {

@@ -1,3 +1,3 @@
 export class <%= classify(name)%> {
-    <%= camelize(name)%>Id: number;
+  <%= camelize(name)%>Id: number;
 }
