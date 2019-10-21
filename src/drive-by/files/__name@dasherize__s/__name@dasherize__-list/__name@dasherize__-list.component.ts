@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { <%= classify(name)%>Service } from '../services/<%= camelize(name)%>.service';
 import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
-import { finalize, catchError } from 'rxjs/operators';
+import { finalize, catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { MessagingService } from '@lc-app/core/services/messaging.service';

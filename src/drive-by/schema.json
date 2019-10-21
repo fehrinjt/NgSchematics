@@ -7,7 +7,11 @@
       "name": {
         "type": "string",
         "description": "Name of the drive by (example, the model name: Product)",
-        "x-prompt": "What name to use?" 
+        "x-prompt": "What name to use?",
+        "$default": {
+          "$source": "argv",
+          "index": 0
+        }
       },
       "project": {
         "type": "string",
