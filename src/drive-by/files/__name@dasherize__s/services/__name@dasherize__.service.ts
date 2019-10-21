@@ -25,8 +25,9 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           return throwError('Error getting <%= classify(name)%>s');
-           })
+          this.messageService.addNotification('Error getting <%= classify(name)%>s');
+          return throwError('Error getting <%= classify(name)%>s');
+        })
       );
   }
 
@@ -35,8 +36,9 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res.filter(p => p.<%= camelize(name)%>Id === id)[0]),
         catchError(() => {
-           return throwError('Error getting <%= classify(name)%>s');
-           })
+          this.messageService.addNotification('Error getting <%= classify(name)%>');
+          return throwError('Error getting <%= classify(name)%>');
+        })
       );
   }
 
@@ -45,8 +47,9 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           return throwError('Error creating <%= classify(name)%>');
-           })
+          this.messageService.addNotification('Error creating <%= classify(name)%>');
+          return throwError('Error creating <%= classify(name)%>');
+        })
       );
   }
 
@@ -55,8 +58,9 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           return throwError('Error updating <%= classify(name)%>');
-           })
+          this.messageService.addNotification('Error updating <%= classify(name)%>');
+          return throwError('Error updating <%= classify(name)%>');
+        })
       );
   }
 
@@ -65,8 +69,9 @@ export class <%= classify(name)%>Service extends BaseService {
       .pipe(
         map((res) => res),
         catchError(() => {
-           return throwError('Error deleting <%= classify(name)%>');
-           })
+          this.messageService.addNotification('Error updating <%= classify(name)%>');
+          return throwError('Error updating <%= classify(name)%>');
+        })
       );
   }
 }
