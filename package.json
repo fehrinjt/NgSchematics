@@ -1,7 +1,7 @@
 {
-  "name": "lc-schematics",
-  "version": "0.0.1",
-  "description": "A blank schematics",
+  "name": "@larimer/schematics",
+  "version": "0.1.0",
+  "description": "Angular schematics for Larimer",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",

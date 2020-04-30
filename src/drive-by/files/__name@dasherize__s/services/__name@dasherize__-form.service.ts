@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@lc-app/environments/environment';
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
-import { BaseService } from '@lc-app/core/services/base.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { <%= classify(name)%>FormValidatorService } from './<%= camelize(name)%>-form-validator.service';
 

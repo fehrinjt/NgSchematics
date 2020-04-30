@@ -1,13 +1,22 @@
-<div class="text-center w-100">
-  <h4><%= classify(name)%>s</h4>
-</div>
-<button class="btn btn-success mb-2" (click)="addNew()">Add New</button>
-<app-grid [data]="<%= camelize(name)%>s" [cols]="cols" [showDelete]="true" (rowSelected)="selected($event)" [loading]="loading"
-  (rowDeleted)="remove<%= classify(name)%>($event)" [filterable]="false"></app-grid>
 
-<kendo-dialog *ngIf="show<%= classify(name)%>Edit" (close)="closeModal()" [width]="'50%'">
-  <app-<%= camelize(name)%>-form [<%= camelize(name)%>]="selected<%= classify(name)%>" (save)="save<%= classify(name)%>($event)" (cancel)="closeModal()"
-    [isNew]="isNew<%= classify(name)%>" [saving]="saving"></app-<%= camelize(name)%>-form>
-</kendo-dialog>
+  <div class="page-title"><%= classify(name)%>s</div>
+  <app-grid [data]="<%= camelize(name)%>s$ | async" [cols]="cols" [showDelete]="true" [loading]="loading$ | async"
+    [filterable]="false"
+    (addClick)="addNew()"
+    (rowSelected)="selected($event)"
+    (rowDeleted)="remove<%= classify(name)%>($event)"></app-grid>
 
-<div kendoDialogContainer></div>
+  <kendo-dialog *ngIf="show<%= classify(name)%>Edit" (close)="closeModal()" [width]="'70%'">
+    <kendo-dialog-titlebar>
+      <div style="font-size: 18px; line-height: 1.3em;">
+        <h4>{{ isNew<%= classify(name)%> ? 'Add New <%= classify(name)%>' : 'Edit <%= classify(name)%>' }}</h4>
+      </div>
+    </kendo-dialog-titlebar>
+    <app-<%= camelize(name)%>-form [<%= camelize(name)%>]="selected<%= classify(name)%>$ | async"
+      (save)="save<%= classify(name)%>($event)"
+      (cancel)="closeModal()"
+      [isNew]="isNew<%= classify(name)%>"
+      [saving]="saving$ | async"
+      [loading]="loadingSelected$ | async">
+    </app-<%= camelize(name)%>-form>
+  </kendo-dialog>

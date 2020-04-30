@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { <%= classify(name)%>Service } from '../services/<%= camelize(name)%>.service';
+import { TelerikColumn } from '@lc-shared/interfaces/telerik-column.interface';
 import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
-import { finalize, catchError, switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { MessagingService } from '@lc-app/core/services/messaging.service';
-import { TelerikColumn } from '@lc-app/shared/interfaces/telerik-column.interface';
+import { <%= classify(name)%>Service } from '../services/<%= camelize(name)%>.service';
+import { MessagingService } from '@lc-core/services/messaging.service';
 
 @Component({
   selector: 'app-<%= camelize(name)%>-list',
@@ -13,46 +10,57 @@ import { TelerikColumn } from '@lc-app/shared/interfaces/telerik-column.interfac
   styleUrls: ['./<%= camelize(name)%>-list.component.scss']
 })
 export class <%= classify(name)%>ListComponent implements OnInit {
-  <%= camelize(name)%>s: <%= classify(name)%>[];
-  selected<%= classify(name)%>: <%= classify(name)%>;
+  <%= camelize(name)%>s$ = this.<%= camelize(name)%>Service.items$;
+  selected<%= classify(name)%>$ = this.<%= camelize(name)%>Service.selectedAction$;
   cols: TelerikColumn[];
-  loading = true;
+  loading$ = this.<%= camelize(name)%>Service.loading$;
+  loadingSelected$ = this.<%= camelize(name)%>Service.loadingSelected$;
+  saving$ = this.<%= camelize(name)%>Service.saving$;
   show<%= classify(name)%>Edit = false;
   isNew<%= classify(name)%> = false;
-  saving = false;
 
   constructor(
     private <%= camelize(name)%>Service: <%= classify(name)%>Service,
-    private router: Router,
     private messageService: MessagingService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadData();
 
     this.cols = [];
     this.cols.push(new TelerikColumn('<%= camelize(name)%>Id', 'ID'));
-    // TODO: Add more columns to match your model
+
+    this.<%= camelize(name)%>Service.updateSuccessAction$
+      .subscribe(upd => {
+          this.show<%= classify(name)%>Edit = false;
+          this.<%= camelize(name)%>Service.select(null);
+      });
+
+    this.<%= camelize(name)%>Service.deleteSuccessAction$
+      .subscribe(message => {
+        this.messageService.addNotification('Successfully Deleted', 'success');
+      });
+
+    this.<%= camelize(name)%>Service.createSuccessAction$
+      .subscribe(m => {
+        this.messageService.addNotification('Successfully Added', 'success');
+        this.<%= camelize(name)%>Service.select(null);
+        this.show<%= classify(name)%>Edit = false;
+      });
   }
 
   loadData() {
-    this.<%= camelize(name)%>Service.get()
-      .pipe(
-        finalize(() => this.loading = false)
-      )
-      .subscribe(res => {
-        this.<%= camelize(name)%>s = res;
-      });
+    this.<%= camelize(name)%>Service.load();
   }
 
   selected(<%= camelize(name)%>: <%= classify(name)%>) {
     // TODO: This will take you to a new page for view/edit/add
-    // this.router.navigate(['/admin/<%= camelize(name)%>s', <%= camelize(name)%>.<%= camelize(name)%>Id]);
+    // this.router.navigate(['/admin/products', product.productId]);
 
     // TODO: This will keep you on the same page and show the view/edit/add as a modal popup
     this.isNew<%= classify(name)%> = false;
     this.show<%= classify(name)%>Edit = true;
-    this.selected<%= classify(name)%> = <%= camelize(name)%>;
+    this.<%= camelize(name)%>Service.select(<%= camelize(name)%>.<%= camelize(name)%>Id);
   }
 
   addNew() {
@@ -60,33 +68,22 @@ export class <%= classify(name)%>ListComponent implements OnInit {
     // this.router.navigate(['/admin/<%= camelize(name)%>s', -1]);
 
     // TODO: This will keep you on the same page and show the view/edit/add as a modal popup
+    console.log('add new');
     this.isNew<%= classify(name)%> = true;
-    this.selected<%= classify(name)%> = new <%= classify(name)%>();
+    this.<%= camelize(name)%>Service.select(null);
     this.show<%= classify(name)%>Edit = true;
   }
 
   remove<%= classify(name)%>(<%= camelize(name)%>: <%= classify(name)%>) {
-    this.messageService.showDeleteConfirmation()
-      .pipe(
-        switchMap(res => this.<%= camelize(name)%>Service.delete(<%= camelize(name)%>)),
-        catchError(err => {
-          this.messageService.addNotification(err);
-          return throwError('Error deleting <%= camelize(name)%>');
-        })
-      )
-      .subscribe(res => {
-        this.<%= camelize(name)%>s = this.<%= camelize(name)%>s.filter(p => p.<%= camelize(name)%>Id !== <%= camelize(name)%>.<%= camelize(name)%>Id);
-        this.closeModal();
-      });
+    this.<%= camelize(name)%>Service.delete(<%= camelize(name)%>.<%= camelize(name)%>Id);
   }
 
   closeModal() {
-    this.selected<%= classify(name)%> = null;
+    this.<%= camelize(name)%>Service.select(null);
     this.show<%= classify(name)%>Edit = false;
   }
 
   save<%= classify(name)%>(<%= camelize(name)%>: <%= classify(name)%>) {
-    this.saving = true;
     if (<%= camelize(name)%>.<%= camelize(name)%>Id && <%= camelize(name)%>.<%= camelize(name)%>Id > 0) {
       this.update<%= classify(name)%>(<%= camelize(name)%>);
     } else {
@@ -95,35 +92,10 @@ export class <%= classify(name)%>ListComponent implements OnInit {
   }
 
   update<%= classify(name)%>(<%= camelize(name)%>: <%= classify(name)%>) {
-    this.<%= camelize(name)%>Service.update(<%= camelize(name)%>)
-      .pipe(
-        catchError(err => {
-          this.messageService.addNotification(err);
-          return throwError('Error updating <%= camelize(name)%>');
-        }),
-        finalize(() => this.saving = false)
-      )
-      .subscribe(res => {
-        const idx = this.<%= camelize(name)%>s.findIndex(p => p.<%= camelize(name)%>Id === <%= camelize(name)%>.<%= camelize(name)%>Id);
-        this.<%= camelize(name)%>s[idx] = res;
-        this.<%= camelize(name)%>s = [...this.<%= camelize(name)%>s];
-
-        this.closeModal();
-      });
+    this.<%= camelize(name)%>Service.update(<%= camelize(name)%>, <%= camelize(name)%>.<%= camelize(name)%>Id);
   }
 
   saveNew<%= classify(name)%>(<%= camelize(name)%>: <%= classify(name)%>) {
-    this.<%= camelize(name)%>Service.add(<%= camelize(name)%>)
-      .pipe(
-        catchError(err => {
-          this.messageService.addNotification(err);
-          return throwError('Error creating <%= camelize(name)%>');
-        }),
-        finalize(() => this.saving = false)
-      )
-      .subscribe(res => {
-        this.<%= camelize(name)%>s = [...this.<%= camelize(name)%>s, res];
-        this.closeModal();
-      });
+    this.<%= camelize(name)%>Service.create(<%= camelize(name)%>);
   }
 }
