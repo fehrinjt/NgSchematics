@@ -12,11 +12,11 @@
         <h4>{{ isNew<%= classify(name)%> ? 'Add New <%= classify(name)%>' : 'Edit <%= classify(name)%>' }}</h4>
       </div>
     </kendo-dialog-titlebar>
-    <app-<%= camelize(name)%>-form [<%= camelize(name)%>]="selected<%= classify(name)%>$ | async"
+    <app-<%= dasherize(name)%>-form [<%= camelize(name)%>]="selected<%= classify(name)%>$ | async"
       (save)="save<%= classify(name)%>($event)"
       (cancel)="closeModal()"
       [isNew]="isNew<%= classify(name)%>"
       [saving]="saving$ | async"
       [loading]="loadingSelected$ | async">
-    </app-<%= camelize(name)%>-form>
+    </app-<%= dasherize(name)%>-form>
   </kendo-dialog>

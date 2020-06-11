@@ -35,7 +35,7 @@ export function driveBy(_options: any): Rule {
       _options.project = projectName;
 
       const defaultProjectPath = buildDefaultPath(project);
-      
+
       const parsedPath = parseName(defaultProjectPath, _options.name);
 
       const { name, path } = parsedPath;
@@ -61,7 +61,7 @@ export function driveBy(_options: any): Rule {
       ]);
     }
 
-    
+
   };
 }
 

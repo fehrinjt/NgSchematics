@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TelerikColumn } from '@lc-shared/interfaces/telerik-column.interface';
-import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
-import { <%= classify(name)%>Service } from '../services/<%= camelize(name)%>.service';
+import { <%= classify(name)%> } from '../models/<%= dasherize(name)%>.model';
+import { <%= classify(name)%>Service } from '../services/<%= dasherize(name)%>.service';
 import { MessagingService } from '@lc-core/services/messaging.service';
 
 @Component({
-  selector: 'app-<%= camelize(name)%>-list',
-  templateUrl: './<%= camelize(name)%>-list.component.html',
-  styleUrls: ['./<%= camelize(name)%>-list.component.scss']
+  selector: 'app-<%= dasherize(name)%>-list',
+  templateUrl: './<%= dasherize(name)%>-list.component.html',
+  styleUrls: ['./<%= dasherize(name)%>-list.component.scss']
 })
 export class <%= classify(name)%>ListComponent implements OnInit {
   <%= camelize(name)%>s$ = this.<%= camelize(name)%>Service.items$;
@@ -68,7 +68,6 @@ export class <%= classify(name)%>ListComponent implements OnInit {
     // this.router.navigate(['/admin/<%= camelize(name)%>s', -1]);
 
     // TODO: This will keep you on the same page and show the view/edit/add as a modal popup
-    console.log('add new');
     this.isNew<%= classify(name)%> = true;
     this.<%= camelize(name)%>Service.select(null);
     this.show<%= classify(name)%>Edit = true;

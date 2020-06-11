@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { <%= classify(name)%>Service } from '../services/<%= camelize(name)%>.service';
-import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
+import { <%= classify(name)%>Service } from '../services/<%= dasherize(name)%>.service';
+import { <%= classify(name)%> } from '../models/<%= dasherize(name)%>.model';
 import { catchError, finalize } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Component({
-  selector: 'app-<%= camelize(name)%>-detail',
-  templateUrl: './<%= camelize(name)%>-detail.component.html',
-  styleUrls: ['./<%= camelize(name)%>-detail.component.scss']
+  selector: 'app-<%= dasherize(name)%>-detail',
+  templateUrl: './<%= dasherize(name)%>-detail.component.html',
+  styleUrls: ['./<%= dasherize(name)%>-detail.component.scss']
 })
 export class <%= classify(name)%>DetailComponent implements OnInit {
   id: number;

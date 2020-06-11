@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { <%= classify(name)%> } from '../models/<%= camelize(name)%>.model';
+import { <%= classify(name)%> } from '../models/<%= dasherize(name)%>.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { <%= classify(name)%>FormValidatorService } from './<%= camelize(name)%>-form-validator.service';
+import { <%= classify(name)%>FormValidatorService } from './<%= dasherize(name)%>-form-validator.service';
 
 @Injectable()
 export class <%= classify(name)%>FormService {
