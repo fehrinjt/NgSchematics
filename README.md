@@ -26,3 +26,8 @@ npm publish
 
 That's it!
  
+
+ ### Running for LC Schematics
+ Be sure to build this project first.
+ In the project you want the schematic to run in: npm link $PATH_TO_SCHEMATIC_PROJECT.
+ ng generate my-component:my-component someName.
